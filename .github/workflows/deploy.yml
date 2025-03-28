@@ -1,32 +1,32 @@
-name: Deploy Service
+name: Deploy to CentOS
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install SSH key
-      uses: actions/configure-ssh@v1
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Build and Deploy
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-          # Обновляем код
-          cd /srv/repo/service
-          git pull origin main
-          
-          # Пересобираем приложение (если нужно)
-          go mod tidy
-          go build -o /opt/service/server
-          
-          # Перезапускаем сервис
-          sudo systemctl restart service
-        "
+      - name: Deploy to CentOS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            # Обновляем код
+            cd /srv/repo/service
+            sudo -u deployer git pull origin main
+            
+            # Пересобираем (для Go)
+            sudo -u deployer /usr/local/go/bin/go build -o /opt/service/server
+            
+            # Перезапускаем сервис
+            sudo systemctl daemon-reload
+            sudo systemctl restart service
+          "
