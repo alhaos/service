@@ -23,6 +23,7 @@ jobs:
             git pull
             cd /srv/repo/service/cmd/server/            
             go build -o /opt/service/server
+            sudo restorecon -v /opt/service/server
             sudo systemctl daemon-reload
             sudo systemctl restart service
           "
