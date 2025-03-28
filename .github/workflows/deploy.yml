@@ -19,14 +19,10 @@ jobs:
       - name: Deploy to CentOS
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            # Обновляем код
             cd /srv/repo/service
             sudo -u deployer git pull origin main
-            
-            # Пересобираем (для Go)
-            sudo -u deployer /usr/local/go/bin/go build -o /opt/service/server
-            
-            # Перезапускаем сервис
+            cd /srv/repo/service/cmd/server/            
+            go build -o /opt/service/server
             sudo systemctl daemon-reload
             sudo systemctl restart service
           "
