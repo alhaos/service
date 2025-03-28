@@ -23,9 +23,6 @@ jobs:
             git pull
             cd /srv/repo/service/cmd/server/            
             go build -o /opt/service/server
-            sudo chmod 755 /opt/service/server
-            sudo chown deployer:deployer /opt/service/server
-            sudo restorecon -v /opt/service/server
             sudo systemctl daemon-reload
             sudo systemctl restart service
           "
