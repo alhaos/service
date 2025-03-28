@@ -20,7 +20,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd /srv/repo/service
-            sudo -u deployer git pull origin main
+            git pull
             cd /srv/repo/service/cmd/server/            
             go build -o /opt/service/server
             sudo systemctl daemon-reload
