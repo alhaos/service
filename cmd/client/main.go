@@ -12,7 +12,7 @@ import (
 
 func main() {
 	conn, err := grpc.NewClient(
-		"localhost:50051",
+		"82.202.140.217:50051",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
