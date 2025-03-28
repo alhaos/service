@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package service;
+
+option go_package = "./proto";
+
+service Counter {
+  rpc Login (LoginRequest) returns (LoginResponse){}
+  rpc Increment (IncrementRequest) returns (IncrementResponse){}
+}
+
+message IncrementRequest{}
+
+message IncrementResponse{
+  int32 current_value = 1;
+}
+
+message LoginRequest {
+  string Username = 1;
+  string Password = 3;
+}
+
+message LoginResponse{
+  string token = 1;
+}
